@@ -59,10 +59,10 @@ moveOffset = 0; // For lazy loading moves
  async function getObject(obj, id){
     let data;
     if(localStorage.getItem(`${obj}_${id}`)){
-        console.log("cache do " + obj + " encontrado!");
+        console.log(obj + " cache found!");
         data = JSON.parse(localStorage.getItem(`${obj}_${id}`))
     }else{
-        console.log("buscando " + obj + " na API");
+        console.log("searching " + obj + " on API");
         let dataFetch;
         try{
             dataFetch = await fetch(`https://pokeapi.co/api/v2/${obj}/${id}`)
@@ -82,7 +82,7 @@ moveOffset = 0; // For lazy loading moves
             localStorage.setItem(`${obj}_${id}`, JSON.stringify(data));
         }catch(e){
             if(e == "QuotaExceededError"){
-                console.log("LS cheio, limpando!");
+                console.log("full LS, cleaning!");
                 localStorage.clear()
                 localStorage.setItem(`${obj}_${id}`, JSON.stringify(data));
             }
@@ -129,6 +129,7 @@ async function renderPokemon(id){
     if(!pokeDataFetch || !pokeSpeciesFetch){    
         input.classList.remove("loading");
         input.classList.add("noPokemonFound");
+        window.alert("Error: Pokémon not found!")
         input.placeholder = "No pokémon found!";
 
         setTimeout(() => {
